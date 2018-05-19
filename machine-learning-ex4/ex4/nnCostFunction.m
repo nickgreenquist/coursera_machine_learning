@@ -62,11 +62,11 @@ Theta2_grad = zeros(size(Theta2));
 %               and Theta2_grad from Part 2.
 %
 
-y_mapped = zeros(m,num_labels); % m x num_labels
+y_mapped = zeros(m,num_labels);
 y_mapped(sub2ind(size(y_mapped), 1:m, y')) = 1;
 
-X = [ones(m, 1) X];
-z2 = X * Theta1';
+a1 = [ones(m, 1) X];
+z2 = a1 * Theta1';
 a2 = sigmoid(z2);
 
 a2 = [ones(m, 1) a2];
@@ -83,26 +83,11 @@ J = (1.0/m)*sum(sum(-y_mapped.*log(ht) - (1-y_mapped).*log(1-ht))) + ...
 delta_3 = a3 - y_mapped;
 delta_2 = (delta_3 * Theta2)(:,2:end).*sigmoidGradient(z2);
 
+Theta2_grad = (1.0/m)*(delta_3' * a2);
+Theta1_grad = (1.0/m)*(delta_2' * a1);
 
-
-     
-  
-
-% grad = ((1.0/m)*sum((predictions-y).*X, 1))';
-% grad(1) = (1.0/m)*sum((predictions-y).*X(1)); 
-
-
-
-
-
-
-
-
-
-
-
-
-
+Theta2_grad(:,2:end) += (lambda/m)*Theta2(:,2:end);
+Theta1_grad(:,2:end) += (lambda/m)*Theta1(:,2:end);
 
 % -------------------------------------------------------------
 
