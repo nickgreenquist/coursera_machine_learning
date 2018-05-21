@@ -84,6 +84,7 @@ pause;
 %  Train linear regression with lambda = 0
 lambda = 0;
 [theta] = trainLinearReg([ones(m, 1) X], y, lambda);
+theta
 
 %  Plot fit over the data
 plot(X, y, 'rx', 'MarkerSize', 10, 'LineWidth', 1.5);
@@ -218,3 +219,8 @@ end
 
 fprintf('Program paused. Press enter to continue.\n');
 pause;
+
+%% =========== Part 9: Test Error =============
+[error_train, error_test] = ...
+    learningCurve(X_poly, y, X_poly_test, ytest, 3);
+error_test

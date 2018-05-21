@@ -15,8 +15,8 @@ X_poly = zeros(numel(X), p);
 %
 % 
 
-
-
+P = 1:p;
+X_poly = bsxfun(@(x,y) x.^y, X, P)
 
 
 
