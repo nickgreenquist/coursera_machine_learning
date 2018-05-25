@@ -40,19 +40,29 @@ Theta_grad = zeros(size(Theta));
 %                     partial derivatives w.r.t. to each element of Theta
 %
 
+sqrError = (X * Theta' - Y).^2;
+J = (1.0/2.0)*sum(sum(sqrError.*R));
 
+% X gradients (learned features)
+for i=1:num_movies
+  j = find(R(i,:) == 1); %rating exists
+  rating = Y(i,j);
+  predicted = X(i,:)*Theta(j,:)';
+  X_grad(i,:) = (predicted - rating)*Theta(j,:);
+endfor
 
+% Theta gradients
+for i=1:num_users
+  j = find(R(:,i) == 1); %rating exists
+  rating = Y(j,i);
+  predicted = X(j,:)*Theta(i,:)';
+  Theta_grad(i,:) = (X(j,:)' * (predicted - rating))';
+endfor
 
-
-
-
-
-
-
-
-
-
-
+% Regularization
+J += (lambda/2) * (sum(sum(Theta.^2)) + sum(sum(X.^2)));
+X_grad += lambda * X;
+Theta_grad += lambda * Theta;
 
 
 % =============================================================
